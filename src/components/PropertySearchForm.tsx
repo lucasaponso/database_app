@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-
+/**
+ * @brief The following component refers to
+ * a form that can recieve data for filtering listings.
+ * (i.e property type, num_bedrooms and location)
+ * @returns 
+ */
 export const PropertySearchForm = () => {
   const [formData, setFormData] = useState({
     location: '',
