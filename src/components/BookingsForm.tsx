@@ -2,10 +2,30 @@ import React, { useEffect, useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 
-
+/**
+ * @brief The following prop, refers to the insertion
+ * of the listing_id when booking a listing.
+ */
 interface BookingFormProps {
     listingId: string;
+}
+
+/**
+ * @brief The following prop, refers to a booking entry being made.
+ * This comes from the booking form.
+ */
+interface Booking {
+    startDate: string;
+    endDate: string;
+    clientName: string;
+    email: string;
+    daytimePhone: string;
+    mobile: string;
+    postalAddress: string;
+    homeAddress: string;
+    listingId: string;
   }
+  
 
 /**
  * @brief The following component refers to the booking form,
@@ -13,7 +33,7 @@ interface BookingFormProps {
  * @returns 
  */
 export const BookingForm: React.FC<BookingFormProps> = ({ listingId }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Booking>({
     startDate: '',
     endDate: '',
     clientName: '',
@@ -45,16 +65,25 @@ export const BookingForm: React.FC<BookingFormProps> = ({ listingId }) => {
 
     const newErrors: { [key: string]: string } = {};
 
+    /** Checking whether the data in the input 
+     * is populated. 
+     */
     if (!formData.startDate) newErrors.startDate = 'Start date is required';
     if (!formData.endDate) newErrors.endDate = 'End date is required';
     if (!formData.clientName.trim()) newErrors.clientName = 'Client name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     if (!formData.daytimePhone.trim()) newErrors.daytimePhone = 'Daytime phone is required';
 
+    /** 
+     * Validate the email, and it's structure.
+     */
     if (!isEmail(formData.email)) {
       newErrors.email = 'Enter a valid email address';
     }
 
+    /** 
+     * Validate the mobile, and it's structure.
+     */
     if (!isMobilePhone(formData.daytimePhone, 'any')) {
       newErrors.daytimePhone = 'Enter a valid daytime phone number';
     }
