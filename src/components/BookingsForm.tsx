@@ -25,7 +25,7 @@ export const BookingForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
     const newErrors: { [key: string]: string } = {};
@@ -67,6 +67,38 @@ export const BookingForm = () => {
       setErrors(newErrors);
       return;
     }
+
+    try {
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+    
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || 'Failed to submit booking');
+        }
+    
+        const data = await res.json();
+        alert('Booking submitted successfully!');
+        console.log('Submitted booking:', data);
+        setFormData({
+          startDate: '',
+          endDate: '',
+          clientName: '',
+          email: '',
+          daytimePhone: '',
+          mobile: '',
+          postalAddress: '',
+          homeAddress: '',
+        });
+      } catch (err: any) {
+        alert(`Error: ${err.message}`);
+        console.error('Submission error:', err);
+      }
   
     setErrors({});
     console.log('Booking submitted:', formData);
