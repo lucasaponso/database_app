@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-
+/**
+ * @brief The following interface refers to the search
+ * filters available for filtering listings.
+ * @param location
+ * @param propertyType
+ * @param bedrooms (num)
+ */
 interface SearchFilters {
   location: string;
   propertyType: string;
@@ -17,7 +23,7 @@ const propertyTypes = [
     { value: 'Townhouse', label: 'Townhouse' }
   ];
   
-  const bedroomOptions = [
+const bedroomOptions = [
     { value: '', label: 'Any bedrooms (optional)' },
     { value: '1', label: '1 bedroom' },
     { value: '2', label: '2 bedrooms' },
