@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
+
+
+interface BookingFormProps {
+    listingId: string;
+  }
 
 /**
  * @brief The following component refers to the booking form,
  * where the user can apply for a booking.
  * @returns 
  */
-export const BookingForm = () => {
+export const BookingForm: React.FC<BookingFormProps> = ({ listingId }) => {
   const [formData, setFormData] = useState({
     startDate: '',
     endDate: '',
@@ -17,7 +22,12 @@ export const BookingForm = () => {
     mobile: '',
     postalAddress: '',
     homeAddress: '',
+    listingId: listingId,
   });
+
+  useEffect(() => {
+    setFormData((prev) => ({...prev, listingId}));
+  }), [listingId];
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -91,6 +101,7 @@ export const BookingForm = () => {
         mobile: '',
         postalAddress: '',
         homeAddress: '',
+        listingId: ''
       });
 
       setShowSuccessModal(true);
