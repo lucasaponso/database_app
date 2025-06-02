@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
-/**
- * @brief The following component refers to
- * a form that can recieve data for filtering listings.
- * (i.e property type, num_bedrooms and location)
- * @returns 
- */
-export const PropertySearchForm = () => {
-  const [formData, setFormData] = useState({
-    location: '',
-    propertyType: '',
-    bedrooms: ''
-  });
-  const [errors, setErrors] = useState({});
 
-  const propertyTypes = [
+interface SearchFilters {
+  location: string;
+  propertyType: string;
+  bedrooms: string;
+}
+
+interface PropertySearchFormProps {
+  onSearch: (filters: Partial<SearchFilters>) => void;
+}
+const propertyTypes = [
     { value: '', label: 'Select property type (optional)' },
-    { value: 'house', label: 'House' },
-    { value: 'apartment', label: 'Apartment' },
-    { value: 'condo', label: 'Condo' },
-    { value: 'townhouse', label: 'Townhouse' }
+    { value: 'House', label: 'House' },
+    { value: 'Apartment', label: 'Apartment' },
+    { value: 'Condominium', label: 'Condo' },
+    { value: 'Townhouse', label: 'Townhouse' }
   ];
-
+  
   const bedroomOptions = [
     { value: '', label: 'Any bedrooms (optional)' },
     { value: '1', label: '1 bedroom' },
@@ -29,28 +25,31 @@ export const PropertySearchForm = () => {
     { value: '4+', label: '4+ bedrooms' }
   ];
 
-  const handleChange = (e) => {
+export const PropertySearchForm: React.FC<PropertySearchFormProps> = ({ onSearch }) => {
+      
+    const [formData, setFormData] = useState<SearchFilters>({
+    location: '',
+    propertyType: '',
+    bedrooms: ''
+  });
+
+  const [errors, setErrors] = useState<{ location?: string }>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!formData.location.trim()) {
       setErrors({ location: 'Location is required' });
       return;
     }
-    
-    setErrors({});
-    
-    console.log('Form submitted:', formData);
-    alert(`Searching properties in ${formData.location}`);
-  };
 
+    setErrors({});
+    onSearch(formData);
+  };
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Property Search</h2>
