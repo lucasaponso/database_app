@@ -1,12 +1,12 @@
-// components/ListProperties.tsx
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'; // ← Import router
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface Property {
   _id: string;
   name: string;
   summary: string;
-  price: number; // Stored as string in MongoDB sample_airbnb dataset
+  price: number;
   review_scores?: {
     review_scores_rating?: number;
   };
@@ -75,22 +75,26 @@ const ListProperties: React.FC<ListPropertiesProps> = ({ filters }) => {
       ) : (
         <div className="space-y-4">
           {listings.map((listing) => (
-            <div
-              key={listing._id}
-              className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white cursor-pointer hover:bg-gray-100 transition"
-              onClick={() => handleClick(listing._id)} // ← Navigate on click
-            >
-              <h3 className="text-xl font-bold text-black">{listing.name}</h3>
-              <p className="text-sm text-gray-800 mb-2">{listing.summary}</p>
-              <p className="text-sm text-gray-700">
-                <strong>Daily Price:</strong> ${listing.price?.toLocaleString()}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Review Score:</strong>{' '}
-                {listing.review_scores?.review_scores_rating?.toFixed(1) ?? 'N/A'}
-              </p>
-            </div>
-          ))}
+  <div
+    key={listing._id}
+    className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white hover:bg-gray-100 transition"
+  >
+    <Link href={`/bookings?listingId=${listing._id}`}>
+      <h3 className="text-xl font-bold text-blue-600 hover:underline cursor-pointer">
+        {listing.name}
+      </h3>
+    </Link>
+    <p className="text-sm text-gray-800 mb-2">{listing.summary}</p>
+    <p className="text-sm text-gray-700">
+      <strong>Daily Price:</strong> ${listing.price?.toLocaleString()}
+    </p>
+    <p className="text-sm text-gray-700">
+      <strong>Review Score:</strong>{' '}
+      {listing.review_scores?.review_scores_rating?.toFixed(1) ?? 'N/A'}
+    </p>
+  </div>
+))}
+
         </div>
       )}
     </div>
