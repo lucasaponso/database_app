@@ -65,6 +65,7 @@ const ListProperties: React.FC<ListPropertiesProps> = ({ filters }) => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-4 text-black">Filtered Listings</h2>
+      <p className='text-1xl font-semibold mb-4 text-black'>Click one of the following listings to book:</p>
       {error ? (
         <p className="text-red-500">{error}</p>
       ) : loading ? (
