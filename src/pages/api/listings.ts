@@ -1,16 +1,16 @@
 // pages/api/listings/index.ts
 import { MongoClient } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
+import * as constants from '@/constants';
 const uri = process.env.MONGODB_URI;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(constants.HTTP_405).json({ message: 'Method not allowed' });
   }
 
   if (!uri) {
-    return res.status(500).json({ message: 'Missing MongoDB URI' });
+    return res.status(constants.HTTP_500).json({ message: 'Missing MongoDB URI' });
   }
 
   let client;
@@ -54,10 +54,10 @@ const serializedListings = listings.map(listing => ({
     _id: listing._id.toString() // Convert ObjectID to string
   }));
 
-    res.status(200).json(serializedListings);
+    res.status(constants.HTTP_200).json(serializedListings);
   } catch (error) {
     console.error('Error fetching listings:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(constants.HTTP_500).json({ message: 'Internal server error' });
   } finally {
     if (client) await client.close();
   }
