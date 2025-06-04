@@ -42,7 +42,11 @@ const ListProperties: React.FC<ListPropertiesProps> = ({ filters }) => {
 
         const validatedListings = data.map((item: any) => ({
           ...item,
-          _id: item._id?.toString() || Math.random().toString(36).substring(2, 9)
+          _id: item._id?.toString() || Math.random().toString(36).substring(2, 9),
+          price:
+            typeof item.price === 'object' && item.price?.$numberDecimal
+            ? parseFloat(item.price.$numberDecimal)
+            : item.price,
         }));
 
         setListings(validatedListings);
@@ -86,7 +90,7 @@ const ListProperties: React.FC<ListPropertiesProps> = ({ filters }) => {
     </Link>
     <p className="text-sm text-gray-800 mb-2">{listing.summary}</p>
     <p className="text-sm text-gray-700">
-      <strong>Daily Price:</strong> ${listing.price?.toLocaleString()}
+        <strong>Daily Price:</strong> ${listing.price?.toLocaleString() ?? 'N/A'}
     </p>
     <p className="text-sm text-gray-700">
       <strong>Review Score:</strong>{' '}
